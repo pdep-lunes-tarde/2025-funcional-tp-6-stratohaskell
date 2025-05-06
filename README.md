@@ -13,14 +13,11 @@
 
 - Nombre del grupo
 
-- Legajo: **Completar**
-- Nombre: **Completar**
+- Legajo: 2207746
+- Nombre: Agustín Arias
 
-- Legajo: **Completar**
-- Nombre: **Completar**
-
-- Legajo: **Completar**
-- Nombre: **Completar**
+- Legajo: 2208842
+- Nombre: Lara Simes
 
 
 ## El enunciado
