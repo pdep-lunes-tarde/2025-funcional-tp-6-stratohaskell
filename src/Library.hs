@@ -1,8 +1,9 @@
 module Library where
 import PdePreludat
 
+
 data Ingrediente =
-    Carne | Pan | Panceta | Cheddar | Pollo | Curry | QuesoDeAlmendras | Papas | PatiVegano
+    Carne | Pan | Panceta | Cheddar | Pollo | Curry | QuesoDeAlmendras | Papas | PatiVegano | BaconDeTofu | PanIntegral
     deriving (Eq, Show)
 
 precioIngrediente Carne = 20
@@ -14,6 +15,9 @@ precioIngrediente Curry = 5
 precioIngrediente QuesoDeAlmendras = 15
 precioIngrediente Papas = 10
 precioIngrediente PatiVegano = 10
+precioIngrediente BaconDeTofu = 12
+precioIngrediente PanIntegral = 3
+
 
 data Hamburguesa = Hamburguesa {
     precioBase :: Number,
@@ -25,19 +29,18 @@ hamburguesaDePollo = Hamburguesa {precioBase =30,ingredientes=[Pan,Pollo,Pan]}
 
 hamburguesaMixta =Hamburguesa {precioBase =20, ingredientes = [Pan,Carne,Pollo,Cheddar,Pan]}
 
-tieneCarne:: Hamburguesa -> Bool
-tieneCarne ham = any (==Carne)  (ingredientes ham)
-tienePollo::  Hamburguesa -> Bool
-tienePollo ham = any (==Pollo)  (ingredientes ham)
+
+tieneIngrediente::Ingrediente->Hamburguesa->Bool
+tieneIngrediente ingrediente ham = any (==ingrediente) (ingredientes ham)
 
 precioFinal:: Hamburguesa ->Number
 precioFinal ham = precioBase ham + sum (map precioIngrediente (ingredientes ham))
 
 agrandar:: Hamburguesa->Hamburguesa
 agrandar hamburguesa
-    | tienePatiVegano
-    | tieneCarne hamburguesa = agregarIngrediente Carne hamburguesa
-    | tienePollo hamburguesa =agregarIngrediente Pollo hamburguesa
+    | tieneIngrediente PatiVegano hamburguesa = agregarIngrediente PatiVegano hamburguesa
+    | tieneIngrediente Carne hamburguesa = agregarIngrediente Carne hamburguesa
+    | tieneIngrediente Pollo hamburguesa =agregarIngrediente Pollo hamburguesa
 
 agregarIngrediente :: Ingrediente ->Hamburguesa->Hamburguesa
 agregarIngrediente ingrediente ham = ham{ingredientes= ingrediente: ingredientes ham}
@@ -58,4 +61,27 @@ bigPdep = agregarIngrediente Curry dobleCuarto
 
 delDia :: Hamburguesa->Hamburguesa
 delDia ham = (agregarIngrediente Papas . descuento 30) ham
+
+--parte 3
+
+reemplazar::Ingrediente ->Ingrediente
+reemplazar ingrediente
+    |ingrediente == Carne ||ingrediente == Pollo = PatiVegano
+    |ingrediente == Panceta = BaconDeTofu
+    |ingrediente == Cheddar = QuesoDeAlmendras
+    |otherwise = ingrediente
+
+reemplazarPan::Ingrediente ->Ingrediente
+reemplazarPan ingrediente 
+    | ingrediente == Pan = PanIntegral
+    | otherwise = ingrediente
+
+hacerVeggie :: Hamburguesa->Hamburguesa
+hacerVeggie ham = ham{ingredientes = map reemplazar (ingredientes ham)}
+
+cambiarPan :: Hamburguesa->Hamburguesa
+cambiarPan ham = ham {ingredientes = map reemplazarPan (ingredientes ham)}
+
+dobleCuartoVegano ::Hamburguesa
+dobleCuartoVegano = (hacerVeggie.cambiarPan) dobleCuarto
 

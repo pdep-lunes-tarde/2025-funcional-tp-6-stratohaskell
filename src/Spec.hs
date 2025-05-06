@@ -42,5 +42,18 @@ correrTests = hspec $ do
     describe "delDia " $ do
         it "dada una hamburguesa se le tiene que agregar papas y un 30 porciento de descuento en el precio base" $ do
             precioFinal (delDia dobleCuarto) `shouldBe` 88
+
+--parte 3
+
+    describe "hacerVeggie" $ do
+        it "dada una hamburguesa, cambia los ingredientes por unos aptos para veganos" $ do
+            hacerVeggie pdepBurger `shouldBe` Hamburguesa{precioBase= 16, ingredientes =[BaconDeTofu,QuesoDeAlmendras,PatiVegano,PatiVegano,Pan,PatiVegano,QuesoDeAlmendras,Pan]}
+    
+    describe "cambiarPan" $ do
+        it "dada una hamburguesa, devuelve la misma cambiando los Panes normales por panes intergrales" $ do
+            cambiarPan cuartoDeLibra `shouldBe` Hamburguesa {precioBase =20, ingredientes = [PanIntegral,Carne,Cheddar,PanIntegral]}
         
+    describe "dobleCuartoVegano" $ do
+        it "el doble cuarto vegano debe ser un doble cuarto de libra hecho veggie y con pan integral" $ do
+            dobleCuartoVegano `shouldBe` Hamburguesa {precioBase=20,ingredientes =[PatiVegano,QuesoDeAlmendras,PanIntegral,PatiVegano,QuesoDeAlmendras,PanIntegral]}
      
